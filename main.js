@@ -1,4 +1,7 @@
 
+const SCREENS = {
+    chooseFiguresScreen: '.choose-figures-screen',
+}
 
 function generateTd(is_cell) {
     if (is_cell == 1) {
@@ -9,7 +12,7 @@ function generateTd(is_cell) {
 
 function generateTr(row) {
     let result = '<tr>' 
-    for (i in row) {
+    for (let i in row) {
         result += generateTd(row[i])
     }
     result += '</tr>'
@@ -17,26 +20,49 @@ function generateTr(row) {
 }
 
 function generateTable(table, id) {
-    let result = `<div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="figure${id}">
-                <label class="form-check-label" for="figure${id}">
-                <table>`
-     for (i in table) {
-        result += generateTr(table[i])
-     }
-     result += `</table>
-            </label>
-        </div>`
-     return result
+    let result = '';
+    for (let i in table) {
+        result += `<div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="figure${i}">
+                    <label class="form-check-label" for="figure${i}">
+                    <table>`
+        for (let j in table[i]) {
+            result += generateTr(table[i][j])
+        }
+        result += `</table>
+                </label>
+            </div>`
+        
+        };
+        return result
+    };
+
+const checkboxes = document.querySelectorAll('input[type=checkbox]')
+const button = document.querySelector('button-start')
+
+function check() {
+    button.disabled = true;
+    checkboxes.forEach(input => { if(input.checked) button.disabled=false });
 }
+
+checkboxes.forEach(input => input.addEventListener('change', check));
+    
+
 
 
 const requestPromise = fetch('./figures.json')
 
+let figures = [];
+
 requestPromise.then(function(httpResponse){
-    console.log(httpResponse)
+    console.log(httpResponse);
     const jsonPromise = httpResponse.json();
     jsonPromise.then(function (figuresJson) {
-        console.log(figuresJson)
-    })
+        figures = figuresJson;
+        console.log(figuresJson);
+
+        const chooseFiguresScreen = document.querySelector(SCREENS.chooseFiguresScreen);
+        chooseFiguresScreen.innerHTML = generateTable(figuresJson);
+
+    });
 });

@@ -31,21 +31,29 @@ function generateTable(table, id) {
         }
         result += `</table>
                 </label>
-            </div>`
-        
-        };
-        return result
+            </div>`    
     };
 
-const checkboxes = document.querySelectorAll('input[type=checkbox]')
-const button = document.querySelector('button-start')
+    return result
+};
+
+const button = document.querySelector('.button-start')
+button.disabled = true;
+
+let checkboxes = [];
 
 function check() {
-    button.disabled = true;
-    checkboxes.forEach(input => { if(input.checked) button.disabled=false });
-}
+    count = 4;
+    for (let i in count) {
+    checkboxes.forEach(input => {
+         if(input.checked) {
+            button.disabled=false;
+         };
+        });
+    };
+};
 
-checkboxes.forEach(input => input.addEventListener('change', check));
+
     
 
 
@@ -63,6 +71,7 @@ requestPromise.then(function(httpResponse){
 
         const chooseFiguresScreen = document.querySelector(SCREENS.chooseFiguresScreen);
         chooseFiguresScreen.innerHTML = generateTable(figuresJson);
-
+        checkboxes = document.querySelectorAll('input[type=checkbox]')
+        checkboxes.forEach(input => input.addEventListener('change', check));
     });
 });

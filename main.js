@@ -1,6 +1,7 @@
 
 const SCREENS = {
     chooseFiguresScreen: '.choose-figures-screen',
+    gameScreen: '.game-screen'
 }
 
 function generateTd(is_cell) {
@@ -43,13 +44,22 @@ button.disabled = true;
 let checkboxes = [];
 
 function check() {
-    count = 4;
-    for (let i in count) {
     checkboxes.forEach(input => {
          if(input.checked) {
             button.disabled=false;
          };
         });
+};
+
+function changeScreen(active_screen) {
+    for (let screenName in SCREENS) {
+        const screen = SCREENS[screenName];
+        const element = document.querySelector(screen);
+        if (screen == active_screen) {
+            element.style.removeProperty("display");
+            continue;
+        };
+        element.style.display = "none";
     };
 };
 

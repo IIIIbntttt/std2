@@ -1,24 +1,25 @@
 
 const SCREENS = {
     chooseFiguresScreen: '.choose-figures-screen',
-    gameScreen: '.game-screen'
-}
+    gameScreen: '.game-screen',
+    figuresScreen: '.figures-screen'
+};
 
 function generateTd(is_cell) {
     if (is_cell == 1) {
         return '<td class="cell"></td>';
-    }
+    };
     return '<td class="empty-cell"></td>';
-}
+};
 
 function generateTr(row) {
     let result = '<tr>' 
     for (let i in row) {
-        result += generateTd(row[i])
-    }
+        result += generateTd(row[i]);
+    };
     result += '</tr>'
     return result
-}
+};
 
 function generateTable(table, id) {
     let result = '';
@@ -29,7 +30,7 @@ function generateTable(table, id) {
                     <table>`
         for (let j in table[i]) {
             result += generateTr(table[i][j])
-        }
+        };
         result += `</table>
                 </label>
             </div>`    
@@ -63,11 +64,6 @@ function changeScreen(active_screen) {
     };
 };
 
-
-    
-
-
-
 const requestPromise = fetch('./figures.json')
 
 let figures = [];
@@ -79,8 +75,8 @@ requestPromise.then(function(httpResponse){
         figures = figuresJson;
         console.log(figuresJson);
 
-        const chooseFiguresScreen = document.querySelector(SCREENS.chooseFiguresScreen);
-        chooseFiguresScreen.innerHTML = generateTable(figuresJson);
+        const figuresScreen = document.querySelector(SCREENS.figuresScreen);
+        figuresScreen.innerHTML = generateTable(figuresJson);
         checkboxes = document.querySelectorAll('input[type=checkbox]')
         checkboxes.forEach(input => input.addEventListener('change', check));
     });
